@@ -31,6 +31,7 @@ export default class Fecha {
 
     // Validar si el campo esta lleno
     if (this.validateEmpty(dayInput)) {
+
       if (dayInput.value > 31) {
         ui.sprintMessage("Must be a valid day", dayInput.parentElement);
         ui.sprintMessage("", monthInput.parentElement);
@@ -40,6 +41,7 @@ export default class Fecha {
 
       // Verificar el maximo del meses, segun el mes y el año
       this.monthLengthDay();
+
     }
   }
 
@@ -64,7 +66,7 @@ export default class Fecha {
       // Verificar el maximo del meses, segun el mes y el año
       this.monthLengthDay();
 
-    }
+    } 
   }
 
   // Limita la cantidad de numeros en el input
@@ -76,6 +78,19 @@ export default class Fecha {
 
     // Validar si el campo esta lleno
     if (this.validateEmpty(yearInput)) {
+
+      if (dayInput.value > 31) {
+        ui.sprintMessage("Must be a valid day", dayInput.parentElement);
+        ui.sprintMessage("", monthInput.parentElement);
+        ui.sprintMessage("", yearInput.parentElement);
+        
+      } else if (monthInput.value > 12) {
+        // Validar que el mes no sea mayor a 12
+        ui.sprintMessage("", dayInput.parentElement);
+        ui.sprintMessage("Must be a valid month", monthInput.parentElement);
+        ui.sprintMessage("", yearInput.parentElement);
+        return;
+      }
 
       // Verificar el maximo del meses, segun el mes y el año
       this.monthLengthDay();
@@ -95,6 +110,7 @@ export default class Fecha {
 
   // Verifica si el mes tiene 30 o 31 dias
   monthLengthDay() {
+    
     if (
       monthInput.value !== "" &&
       monthShort.includes(parseInt(monthInput.value)) &&
