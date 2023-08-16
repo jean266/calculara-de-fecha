@@ -32,13 +32,6 @@ export default class Fecha {
     // Validar si el campo esta lleno
     if (this.validateEmpty(dayInput)) {
 
-      if (dayInput.value > 31) {
-        ui.sprintMessage("Must be a valid day", dayInput.parentElement);
-        ui.sprintMessage("", monthInput.parentElement);
-        ui.sprintMessage("", yearInput.parentElement);
-        return;
-      }
-
       // Verificar el maximo del meses, segun el mes y el año
       this.monthLengthDay();
 
@@ -54,14 +47,6 @@ export default class Fecha {
 
     // Validar si el campo esta lleno
     if (this.validateEmpty(monthInput)) {
-
-      if (monthInput.value > 12) {
-        // Validar que el mes no sea mayor a 12
-        ui.sprintMessage("", dayInput.parentElement);
-        ui.sprintMessage("Must be a valid month", monthInput.parentElement);
-        ui.sprintMessage("", yearInput.parentElement);
-        return;
-      }
 
       // Verificar el maximo del meses, segun el mes y el año
       this.monthLengthDay();
@@ -79,21 +64,9 @@ export default class Fecha {
     // Validar si el campo esta lleno
     if (this.validateEmpty(yearInput)) {
 
-      if (dayInput.value > 31) {
-        ui.sprintMessage("Must be a valid day", dayInput.parentElement);
-        ui.sprintMessage("", monthInput.parentElement);
-        ui.sprintMessage("", yearInput.parentElement);
-        
-      } else if (monthInput.value > 12) {
-        // Validar que el mes no sea mayor a 12
-        ui.sprintMessage("", dayInput.parentElement);
-        ui.sprintMessage("Must be a valid month", monthInput.parentElement);
-        ui.sprintMessage("", yearInput.parentElement);
-        return;
-      }
-
       // Verificar el maximo del meses, segun el mes y el año
-      this.monthLengthDay();
+      this.monthLengthDay()
+      
     }
   }
 
@@ -108,10 +81,15 @@ export default class Fecha {
     return true;
   }
 
-  // Verifica si el mes tiene 30 o 31 dias
   monthLengthDay() {
     
-    if (
+    // Verifica si los meses tiene 30 o 31 dias
+    if (dayInput.value > 31) {
+      ui.sprintMessage("Must be a valid day", dayInput.parentElement);
+      ui.sprintMessage("", monthInput.parentElement);
+      ui.sprintMessage("", yearInput.parentElement);
+      return;
+    } else if (
       monthInput.value !== "" &&
       monthShort.includes(parseInt(monthInput.value)) &&
       dayInput.value > 30
@@ -125,29 +103,34 @@ export default class Fecha {
       monthInput.value == 2 &&
       dayInput.value >= 29
     ) {
-
       if (yearInput.value % 4 === 0 && dayInput.value == 29) {
         ui.cleanAlert(dayInput.parentElement);
         ui.cleanAlert(monthInput.parentElement);
         ui.cleanAlert(yearInput.parentElement);
+        return;
       } else {
         ui.sprintMessage("Must be a valid day", dayInput.parentElement);
         ui.sprintMessage("", monthInput.parentElement);
-        ui.sprintMessage("", yearInput.parentElement);
         return;
       }
-
+      return;
     }
 
-    if (this.carrentDate()) {
+    // Validar que el mes no sea mayor a 12
+    if (monthInput.value > 12) {
+      ui.sprintMessage("", dayInput.parentElement);
+      ui.sprintMessage("Must be a valid month", monthInput.parentElement);
+      ui.sprintMessage("", yearInput.parentElement);
+      return;
+    } 
 
-      // Todo es correcto: Limpiar las alertas
+    if(this.carrentDate()) {
+      // Limpiar alertas 
       ui.cleanAlert(dayInput.parentElement);
       ui.cleanAlert(monthInput.parentElement);
       ui.cleanAlert(yearInput.parentElement);
 
-
-      // LLenar el Objeto
+      // llenar el objeto
       dateObj.year = yearInput.value;
       dateObj.month = monthInput.value;
       dateObj.day = dayInput.value;
@@ -161,13 +144,13 @@ export default class Fecha {
   // Validar que la fecha insertada no sea mayor a la actual 
   carrentDate() {
     const date = new Date();
-
+    
     // valida el año
     if (yearInput.value !== "" && yearInput.value > date.getFullYear()) {
       ui.sprintMessage("Must be in the past", yearInput.parentElement);
       ui.sprintMessage("", monthInput.parentElement);
       ui.sprintMessage("", dayInput.parentElement);
-      return;
+      return false;
 
     } else if (yearInput.value !== "" && yearInput.value == date.getFullYear()) {
 
@@ -177,7 +160,7 @@ export default class Fecha {
         ui.sprintMessage("", yearInput.parentElement);
         ui.sprintMessage("Must be in the past", monthInput.parentElement);
         ui.sprintMessage("", dayInput.parentElement);
-        return;
+        return false;
 
       } else if (monthInput.value !== "" && monthInput.value == date.getMonth() + 1) {
 
@@ -187,7 +170,7 @@ export default class Fecha {
           ui.sprintMessage("", yearInput.parentElement);
           ui.sprintMessage("", monthInput.parentElement);
           ui.sprintMessage("Must be in the past", dayInput.parentElement);
-          return;
+          return false;
 
         } else {
           ui.cleanAlert(yearInput.parentElement);
