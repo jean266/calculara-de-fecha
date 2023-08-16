@@ -97,6 +97,7 @@ export default class Fecha {
       ui.sprintMessage("Must be a valid day", dayInput.parentElement);
       ui.sprintMessage("", monthInput.parentElement);
       ui.sprintMessage("", yearInput.parentElement);
+      dateObj.month = "";
       return;
     } else if (
       monthInput.value !== "" &&
