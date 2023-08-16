@@ -82,12 +82,12 @@ export default class Fecha {
   }
 
   monthLengthDay() {
-    
     // Verifica si los meses tiene 30 o 31 dias
     if (dayInput.value > 31) {
       ui.sprintMessage("Must be a valid day", dayInput.parentElement);
       ui.sprintMessage("", monthInput.parentElement);
       ui.sprintMessage("", yearInput.parentElement);
+      dateObj.day = "";
       return;
     } else if (
       monthInput.value !== "" &&
@@ -113,18 +113,19 @@ export default class Fecha {
         ui.sprintMessage("", monthInput.parentElement);
         return;
       }
-      return;
-    }
+    } 
 
     // Validar que el mes no sea mayor a 12
     if (monthInput.value > 12) {
       ui.sprintMessage("", dayInput.parentElement);
       ui.sprintMessage("Must be a valid month", monthInput.parentElement);
       ui.sprintMessage("", yearInput.parentElement);
+      dateObj.month = "";
       return;
     } 
 
     if(this.carrentDate()) {
+      console.log(dateObj);
       // Limpiar alertas 
       ui.cleanAlert(dayInput.parentElement);
       ui.cleanAlert(monthInput.parentElement);
@@ -138,6 +139,7 @@ export default class Fecha {
     } else {
       this.cleanObj();
     }
+
 
   }
 
@@ -253,6 +255,7 @@ export default class Fecha {
   }
 
 }
+
 
 
 
